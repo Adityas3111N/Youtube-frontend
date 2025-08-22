@@ -1,0 +1,6 @@
+/* In your main CSS file (e.g., index.css or App.css) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}

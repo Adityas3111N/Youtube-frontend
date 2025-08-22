@@ -1,0 +1,11 @@
+export {default as HomePage} from './HomePage';
+export {default as VideoPlayerPage} from './VideoPlayerPage'
+export {default as ChannelPage} from './ChannelPage'
+export {default as Login} from './Auth/Login'
+export {default as Signup} from './Auth/Signup'
+export {default as History} from './YouPages/History'
+export {default as LikedVideos} from './YouPages/LikedVideos'
+export {default as WatchLater} from './YouPages/WatchLater'
+export {default as YouPage} from './YouPage'
+export {default as Playlists} from './PlayList/Playlists'
+export {default as PlaylistDetail} from './PlayList/PlaylistDetail'
