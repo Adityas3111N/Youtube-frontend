@@ -35,3 +35,35 @@ export const getRelativeTime = (date) => {
     }
   }
 };
+
+export const formatNumber = (num) => {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'K';
+  }
+  return num;
+};
+
+export const groupByDate = (videos) => {
+  const groups = {};
+  const now = new Date();
+
+  videos.forEach((item) => {
+    const date = new Date(item.watchedAt);
+    const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+    let label;
+    if (diffDays === 0) label = "Today";
+    else if (diffDays === 1) label = "Yesterday";
+    else if (diffDays < 7)
+      label = date.toLocaleDateString("en-US", { weekday: "long" });
+    else label = date.toLocaleDateString();
+
+    if (!groups[label]) groups[label] = [];
+    groups[label].push(item);
+  });
+
+  return groups;
+};

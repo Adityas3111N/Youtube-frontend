@@ -2,38 +2,9 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ThumbsUp, ThumbsDown, Share2, MoreHorizontal, Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import { getRelativeTime, formatNumber } from "../utils/formatDuration";
 // Helper function to format large numbers (e.g., 1234567 -> 1.2M)
-const formatNumber = (num) => {
-  if (num >= 1000000) {
-    return (num / 1000000).toFixed(1) + 'M';
-  }
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1) + 'K';
-  }
-  return num;
-};
 
-const getRelativeTime = (date) => {
-  const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-  const now = new Date();
-  const diff = (now - new Date(date)) / 1000;
-  const units = [
-    { max: 60, value: 1, name: 'second' },
-    { max: 3600, value: 60, name: 'minute' },
-    { max: 86400, value: 3600, name: 'hour' },
-    { max: 2592000, value: 86400, name: 'day' },
-    { max: 31536000, value: 2592000, name: 'month' },
-    { max: Infinity, value: 31536000, name: 'year' }
-  ];
-  for (const unit of units) {
-    if (diff < unit.max) {
-      const value = Math.floor(diff / unit.value) * -1;
-      return rtf.format(value, unit.name);
-    }
-  }
-  return '';
-};
 
 const VideoPlayerPage = () => {
   const navigate = useNavigate();
@@ -234,16 +205,46 @@ const VideoPlayerPage = () => {
 
   //handle subscribe
 
-  const [isSubscribed, setIsSubscribed] = useState(channel?.isSubscribed || false);
-  const [subscribersCount, setSubscribersCount] = useState(0);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [subscribersCount, setSubscribersCount] = useState(0); // if needed
   const [subLoading, setSubLoading] = useState(false);
+
+  // Effect to fetch subscription status whenever channel or currentUserId changes
+  useEffect(() => {
+    if (!channel?._id || !currentUserId) return;
+
+
+    const fetchSubscriptionStatus = async () => {
+      try {
+        const res = await fetch(`${BASE_API_URL}/subscription/status/${channel?._id}`, {
+          credentials: "include", // important to send cookies for auth
+        });
+
+        const data = await res.json();
+        console.log(data)
+
+        if (res.ok && data.success) {
+          setIsSubscribed(!!data.data.isSubscribed); // make sure it's boolean
+          // Optional: if backend provides subscribersCount
+        } else {
+          console.error("Failed to fetch subscription status:", data.message);
+          setIsSubscribed(false);
+        }
+      } catch (err) {
+        console.error("Error fetching subscription status:", err.message);
+        setIsSubscribed(false);
+      }
+    };
+
+    fetchSubscriptionStatus();
+  }, [channel?._id, currentUserId, BASE_API_URL]);
 
   useEffect(() => {
     if (channel) {
-      setIsSubscribed(channel.isSubscribed || false);
       setSubscribersCount(channel.subscribersCount || 0);
     }
   }, [channel]);
+  console.log(isSubscribed)
 
   const handleSubscribe = async () => {
     if (!currentUserId) {

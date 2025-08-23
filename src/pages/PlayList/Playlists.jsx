@@ -127,7 +127,14 @@ const Playlists = () => {
                 <div className="p-4 flex-1 flex flex-col justify-between">
                   <div>
                     <h2 className="text-lg font-semibold text-gray-800 line-clamp-1">{pl.name}</h2>
-                    <p className="text-sm text-gray-600 mt-1 line-clamp-3">{pl.description}</p>
+                    <p className="text-sm text-gray-600 mt-1 line-clamp-2 min-h-[2.5rem]">
+                      {pl.description}
+                    </p>
+
+                    {/* 👇 Added video count */}
+                    <p className="text-xs text-gray-500 mt-2">
+                      {pl.videos?.length || 0} videos
+                    </p>
                   </div>
 
                   {/* Actions */}
@@ -147,6 +154,7 @@ const Playlists = () => {
                 </div>
               </motion.div>
             </Link>
+
           ))}
         </div>
       )}

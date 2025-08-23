@@ -1,74 +1,57 @@
-import React from "react";
-import { Clock } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Heart } from "lucide-react";
+import VideoCard from "../../components/videoCard"; // adjust path if needed
 
-const watchLaterVideos = [
-  {
-    id: 1,
-    title: "Learn JavaScript in 20 Minutes",
-    thumbnail: "https://img.youtube.com/vi/PkZNo7MFNFg/hqdefault.jpg",
-    channel: "Code Academy",
-    views: "1.2M views",
-    time: "2 weeks ago",
-  },
-  {
-    id: 2,
-    title: "Atomic Habits Summary",
-    thumbnail: "https://img.youtube.com/vi/AdKUJxjn-R8/hqdefault.jpg",
-    channel: "Productivity Guy",
-    views: "850K views",
-    time: "1 month ago",
-  },
-  {
-    id: 3,
-    title: "React Hooks Crash Course",
-    thumbnail: "https://img.youtube.com/vi/TNhaISOUy6Q/hqdefault.jpg",
-    channel: "Dev Simplified",
-    views: "500K views",
-    time: "3 days ago",
-  },
-];
+export default function LikedVideos() {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 
-export default function WatchLater() {
+  useEffect(() => {
+    const fetchLikedVideos = async () => {
+      try {
+        const res = await fetch(`${BASE_API_URL}/users/liked-videos`, {
+          credentials: "include", // sends cookies for auth
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          setVideos(data.data || []);
+        } else {
+          console.error("Failed to fetch liked videos:", data.message);
+        }
+      } catch (err) {
+        console.error("Error fetching liked videos:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLikedVideos();
+  }, [BASE_API_URL]);
+
   return (
     <div className="flex flex-col w-full h-full bg-gray-50">
       {/* Header */}
       <div className="px-6 py-4 border-b bg-white shadow-sm flex items-center space-x-3">
-        <Clock className="w-6 h-6 text-red-500" />
-        <h1 className="text-xl font-semibold text-gray-800">Watch Later</h1>
+        <Heart className="w-6 h-6 text-red-500" />
+        <h1 className="text-xl font-semibold text-gray-800">Liked Videos</h1>
       </div>
 
       {/* Content */}
       <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {watchLaterVideos.length > 0 ? (
-          watchLaterVideos.map((video) => (
-            <div
-              key={video.id}
-              className="bg-white rounded-lg shadow-sm hover:shadow-md transition cursor-pointer overflow-hidden"
-            >
-              {/* Thumbnail */}
-              <img
-                src={video.thumbnail}
-                alt={video.title}
-                className="w-full h-40 object-cover"
-              />
-
-              {/* Info */}
-              <div className="p-4">
-                <h2 className="text-sm font-semibold text-gray-900 line-clamp-2">
-                  {video.title}
-                </h2>
-                <p className="text-xs text-gray-600 mt-1">{video.channel}</p>
-                <p className="text-xs text-gray-500">
-                  {video.views} • {video.time}
-                </p>
-              </div>
-            </div>
-          ))
+        {loading ? (
+          <div className="col-span-full text-center text-gray-500">
+            Loading liked videos...
+          </div>
+        ) : videos.length > 0 ? (
+          videos.map((video) => <VideoCard key={video._id} video={video} />)
         ) : (
           <div className="flex flex-col items-center justify-center h-64 text-gray-500 col-span-full">
-            <Clock className="w-12 h-12 mb-3 text-gray-400" />
-            <p className="text-lg font-medium">No videos saved</p>
-            <p className="text-sm">Your saved videos will appear here</p>
+            <Heart className="w-12 h-12 mb-3 text-gray-400" />
+            <p className="text-lg font-medium">No liked videos</p>
+            <p className="text-sm">Your liked videos will appear here</p>
           </div>
         )}
       </div>

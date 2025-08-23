@@ -1,11 +1,12 @@
 // src/components/Nav.jsx
-import React from "react";
+import React, { useState } from "react";
 import { Bell, Mic, Search, Video, Menu } from "lucide-react";
 import UploadModal from "./uploadVideo/uploadModal";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Nav = ({ sidebarExpanded, toggleSidebar, userAvatar }) => {
- const [isUploadOpen, setIsUploadOpen] = useState(false);
+const Nav = ({ sidebarExpanded, toggleSidebar, user }) => {
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <header className="flex items-center justify-between px-8 py-2 bg-white sticky top-0 z-30 border-b border-gray-200">
@@ -49,11 +50,11 @@ const Nav = ({ sidebarExpanded, toggleSidebar, userAvatar }) => {
         </button>
       </div>
 
-      {/* RIGHT: Video, Notifications, Avatar */}
+      {/* RIGHT: Video, Notifications, Avatar / Login */}
       <div className="flex items-center space-x-2">
         <button
           aria-label="Create video"
-          onClick={() => setIsUploadOpen(true)}   // ✅ opens modal
+          onClick={() => setIsUploadOpen(true)} // ✅ opens modal
           className="p-2 rounded-full hover:bg-gray-100 transition-colors"
         >
           <Video className="w-6 h-6 text-gray-700" />
@@ -67,15 +68,27 @@ const Nav = ({ sidebarExpanded, toggleSidebar, userAvatar }) => {
           <span className="absolute top-1.5 right-1.5 bg-red-500 w-2 h-2 rounded-full"></span>
         </button>
 
-        <img
-          src={userAvatar || "https://placehold.co/40x40/cccccc/333333?text=U"}
-          alt="User avatar"
-          className="w-8 h-8 rounded-full object-cover cursor-pointer"
-        />
+        {user ? (
+          <img
+            src={user.avatar}
+            alt="User avatar"
+            className="w-8 h-8 rounded-full object-cover cursor-pointer"
+            onClick={() =>
+              navigate(`/users/channel/${user.userName}/${user._id}`) //navigate to channel
+            }
+          />
+        ) : (
+          <button
+            onClick={() => navigate("/login")}
+            className="flex items-center gap-2 px-4 py-1.5 text-sm font-semibold text-blue-600 
+                       border border-gray-300 rounded-full hover:bg-blue-50 transition-colors shadow-sm"
+          >
+            <span>Sign In</span>
+          </button>
+        )}
       </div>
 
-            <UploadModal isOpen={isUploadOpen} onClose={() => setIsUploadOpen(false)} />
-
+      <UploadModal isOpen={isUploadOpen} onClose={() => setIsUploadOpen(false)} />
     </header>
   );
 };

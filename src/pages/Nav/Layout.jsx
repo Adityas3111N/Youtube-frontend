@@ -6,18 +6,20 @@ import Nav from "./Nav";
 const Layout = () => {
   const BASE_API_URL = "http://localhost:8000/api/v1";
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
-  const [userAvatar, setUserAvatar] = useState("");
+
+  // just replace userAvatar state with full user state
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await fetch(`${BASE_API_URL}/users/current-user`, {
-          credentials: "include"
+          credentials: "include",
         });
         if (!res.ok) throw new Error("Failed to fetch user");
         const data = await res.json();
-        console.log(data)
-        setUserAvatar(data?.data?.avatar || "");
+        console.log(data);
+        setUser(data?.data || null);  //keep full user
       } catch (err) {
         console.error(err);
       }
@@ -25,13 +27,15 @@ const Layout = () => {
     fetchUser();
   }, []);
 
+
   return (
     <div className="relative min-h-screen font-inter text-gray-900">
       <Nav
         sidebarExpanded={sidebarExpanded}
         toggleSidebar={() => setSidebarExpanded((prev) => !prev)}
-        userAvatar={userAvatar}
+        user={user}   //pass full user instead of just avatar
       />
+
       <Sidebar
         sidebarExpanded={sidebarExpanded}
         toggleSidebar={() => setSidebarExpanded((prev) => !prev)}
@@ -39,9 +43,8 @@ const Layout = () => {
 
       {/* Main content */}
       <main
-        className={`transition-all duration-300 ease-in-out ${
-          sidebarExpanded ? "ml-40" : "ml-16"
-        }`}
+        className={`transition-all duration-300 ease-in-out ${sidebarExpanded ? "ml-40" : "ml-16"
+          }`}
       >
         <Outlet />
       </main>
