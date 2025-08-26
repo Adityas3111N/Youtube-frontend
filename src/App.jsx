@@ -11,9 +11,12 @@ import {
   Playlists,
   LikedVideos,
   PlaylistDetail,
+  Logout,
+  Setting,
 } from "./pages";
 import VideoPlayerPage from "./pages/VideoPlayerPage"; // ✅ check it's exported
 import Layout from "./pages/Nav/Layout";
+import Settings from "./pages/Setting";
 
 function App() {
   return (
@@ -57,6 +60,8 @@ function App() {
           <Route path="playlists" element={<Playlists />} />
           <Route path="playlists/:playlistId" element={<PlaylistDetail />} />
           <Route path="watch-later" element={<WatchLater />} />
+          <Route path="logout" element={<Logout />} />
+          <Route path="settings" element={<Setting/>} />
         </Route>
       </Routes>
     </>

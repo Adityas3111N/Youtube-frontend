@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPlaylistById } from "./PlaylistApis";
-import VideoCard from "../../components/VideoCard"; // ✅ import reusable card
+import VideoCard from "../../components/videoCard"; // ✅ import reusable card
 
 const PlaylistDetail = () => {
     const { playlistId } = useParams();

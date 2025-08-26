@@ -7,7 +7,8 @@ import {
   History,
   Settings,
   Menu,
-  UserCircle
+  UserCircle,
+  LogOut
 } from "lucide-react";
 
 const navItems = [
@@ -16,6 +17,7 @@ const navItems = [
   { icon: <UserCircle className="w-6 h-6" />, label: "You", path: "/you" },
   { icon: <History className="w-6 h-6" />, label: "History", path: "/history" },
   { icon: <Settings className="w-6 h-6" />, label: "Settings", path: "/settings" },
+  { icon: <LogOut className="w-6 h-6" />, label: "Logout", path: "/logout" },
 ];
 
 export default function Sidebar({ sidebarExpanded, toggleSidebar }) {
