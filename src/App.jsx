@@ -13,6 +13,7 @@ import {
   PlaylistDetail,
   Logout,
   Setting,
+  TrendingVideos,
 } from "./pages";
 import VideoPlayerPage from "./pages/VideoPlayerPage"; // ✅ check it's exported
 import Layout from "./pages/Nav/Layout";
@@ -62,6 +63,7 @@ function App() {
           <Route path="watch-later" element={<WatchLater />} />
           <Route path="logout" element={<Logout />} />
           <Route path="settings" element={<Setting/>} />
+          <Route path="trending" element={<TrendingVideos/>} />
         </Route>
       </Routes>
     </>
