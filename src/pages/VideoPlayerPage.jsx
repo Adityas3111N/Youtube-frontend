@@ -8,7 +8,7 @@ import { getRelativeTime, formatNumber } from "../utils/formatDuration";
 
 const VideoPlayerPage = () => {
   const navigate = useNavigate();
-  const BASE_API_URL = 'http://localhost:8000/api/v1';
+  const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
   const { videoId } = useParams();
   const [video, setVideo] = useState(null);
   const [channel, setChannel] = useState(null);

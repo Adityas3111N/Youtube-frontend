@@ -4,7 +4,7 @@ import { Plus, Trash2, Music4, FolderOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-const SERVER = "http://localhost:8000/api/v1"; // replace with your server URL
+const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 
 const Playlists = () => {
   const [playlists, setPlaylists] = useState([]);
@@ -25,7 +25,7 @@ const Playlists = () => {
         (res.data || []).map(async (pl) => {
           if (pl.videos && pl.videos.length > 0) {
             try {
-              const videoRes = await fetch(`${SERVER}/videos/watch/${pl.videos[0]}`);
+              const videoRes = await fetch(`${BASE_API_URL}/videos/watch/${pl.videos[0]}`);
               const videoData = await videoRes.json();
               pl.firstThumbnail = videoData.data.thumbnail;
             } catch (err) {

@@ -1,7 +1,5 @@
-const BASE_API_URL = "http://localhost:8000/api/v1/playlist";
-const USER_API_URL = "http://localhost:8000/api/v1/users"; // assuming your backend user routes
-
-// ---------------------- Playlist APIs ----------------------
+const BASE_API_URL = `${import.meta.env.VITE_BASE_API_URL}/playlist`;
+const USER_API_URL = `${import.meta.env.VITE_BASE_API_URL}/users`;
 
 export const createPlaylist = async (name, description) => {
   const res = await fetch(`${BASE_API_URL}/create-playlist`, {
@@ -53,7 +51,6 @@ export const removeVideoFromPlaylist = async (playlistId, videoId) => {
   return res.json();
 };
 
-// ---------------------- User Activity APIs ----------------------
 
 // Get history count
 export const getHistoryCount = async () => {

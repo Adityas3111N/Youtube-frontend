@@ -4,7 +4,8 @@ import Sidebar from "./SideBar";
 import Nav from "./Nav";
 
 const Layout = () => {
-  const BASE_API_URL = "http://localhost:8000/api/v1";
+
+  const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
   // just replace userAvatar state with full user state

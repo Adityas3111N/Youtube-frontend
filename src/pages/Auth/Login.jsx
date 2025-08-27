@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
+
+    const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
+
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -17,7 +20,7 @@ export default function Login() {
         setError("");
 
         try {
-            const res = await fetch("http://localhost:8000/api/v1/users/login", {
+            const res = await fetch(`${BASE_API_URL}/users/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include", // IMPORTANT for cookies

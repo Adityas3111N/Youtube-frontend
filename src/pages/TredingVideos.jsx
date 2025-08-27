@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getRelativeTime, formatNumber } from "../utils/formatDuration";
 import { useNavigate } from "react-router-dom";
 
-const BASE_API_URL = import.meta.env.VITE_BASE_API_URL || "http://localhost:8000/api/v1";
+const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 
 export default function TrendingVideos() {
   const [videos, setVideos] = useState([]);

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Signup() {
+
+  const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
+
   const [formData, setFormData] = useState({
     fullName: "",
     userName: "",
@@ -37,7 +40,7 @@ export default function Signup() {
       if (formData.avatar) body.append("avatar", formData.avatar);
       if (formData.coverImage) body.append("coverImage", formData.coverImage);
 
-      const res = await fetch("http://localhost:8000/api/v1/users/register", {
+      const res = await fetch(`${BASE_API_URL}/users/register`, {
         method: "POST",
         credentials: "include",
         body, // FormData automatically sets correct headers

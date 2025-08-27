@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { groupByDate } from "../../utils/FormatDuration";
-import VideoCard from "../../components/VideoCard"; // <-- import your reusable card
+import VideoCard from "../../components/videoCard"; // <-- import your reusable card
 
-const BASE_API_URL = "http://localhost:8000/api/v1/";
+const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 
 export default function History() {
   const [history, setHistory] = useState([]);
@@ -14,7 +14,7 @@ export default function History() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}users/history`, {
+        const res = await fetch(`${BASE_API_URL}/users/history`, {
           credentials: "include",
         });
         const data = await res.json();

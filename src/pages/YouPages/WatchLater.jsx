@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import VideoCard from "../../components/VideoCard"; // ✅ adjust path if needed
+import VideoCard from "../../components/videoCard"; // ✅ adjust path if needed
 
-const BASE_API_URL = "http://localhost:8000/api/v1";
+const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 
 export default function WatchLater() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchWatchLater();
