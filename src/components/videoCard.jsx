@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { MoreVertical } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { formatDuration } from "../utils/FormatDuration";
-import { getRelativeTime } from "../utils/FormatDuration";
+import { formatDuration } from "../utils/formatDuration";
+import { getRelativeTime } from "../utils/formatDuration";
 import { createPlaylist } from "../pages/PlayList/PlaylistApis";
 import toast from "react-hot-toast";
 
