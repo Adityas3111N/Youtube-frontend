@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { groupByDate } from "../../utils/FormatDuration";
+import { groupByDate } from "../../utils/formatDuration";
 import VideoCard from "../../components/videoCard"; // <-- import your reusable card
 
 const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
