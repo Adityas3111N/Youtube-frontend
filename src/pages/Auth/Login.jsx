@@ -23,7 +23,7 @@ export default function Login() {
             const res = await fetch(`${BASE_API_URL}/users/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include", // IMPORTANT for cookies
+                // credentials: "include", // IMPORTANT for cookies not fetching cookies anymore. just give the response from backend to frontend.
                 body: JSON.stringify(formData),
             });
 
@@ -34,7 +34,10 @@ export default function Login() {
                 throw new Error(data.message || "Something went wrong");
             }
 
-            localStorage.setItem("token", data.token);
+            // localStorage.setItem("token", data.token); // not using tokens from cookies
+            localStorage.setItem("accessToken", data.data.accessToken);
+            localStorage.setItem("refreshToken", data.data.refreshToken);
+            
             navigate("/"); // redirect after login
         } catch (err) {
             setError(err.message);
