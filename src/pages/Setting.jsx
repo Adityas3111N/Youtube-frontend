@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { fetchWithAuth } from "../services/apiClient";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 
@@ -28,8 +29,7 @@ export default function Settings() {
 
   // small helper
   const apiFetch = async (path, opts = {}) => {
-    const res = await fetch(`${BASE_API_URL}${path}`, {
-      credentials: "include",
+    const res = await fetchWithAuth(path, {
       ...opts,
     });
     const json = await res.json().catch(() => ({}));

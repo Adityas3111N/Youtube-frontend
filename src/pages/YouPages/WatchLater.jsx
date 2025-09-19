@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
 import VideoCard from "../../components/videoCard"; // ✅ adjust path if needed
+import { fetchWithAuth } from "../../services/apiClient";
 
 const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 
@@ -14,9 +15,7 @@ export default function WatchLater() {
 
   const fetchWatchLater = async () => {
     try {
-      const res = await fetch(`${BASE_API_URL}/users/watch-later`, {
-        credentials: "include",
-      });
+      const res = await fetchWithAuth(`/users/watch-later`);
       const data = await res.json();
       if (data.success) {
         setVideos(data.data || []);

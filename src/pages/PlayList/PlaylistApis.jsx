@@ -1,51 +1,46 @@
 const BASE_API_URL = `${import.meta.env.VITE_BASE_API_URL}/playlist`;
 const USER_API_URL = `${import.meta.env.VITE_BASE_API_URL}/users`;
+import { fetchWithAuth } from "../../services/apiClient";
 
 export const createPlaylist = async (name, description) => {
-  const res = await fetch(`${BASE_API_URL}/create-playlist`, {
+  const res = await fetchWithAuth(`/playlist/create-playlist`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    credentials: "include",
     body: JSON.stringify({ name, description }),
   });
   return res.json();
 };
 
 export const getPlaylistById = async (playlistId) => {
-  const res = await fetch(`${BASE_API_URL}/${playlistId}`, {
-    credentials: "include",
-  });
+  const res = await fetchWithAuth(`/playlist/${playlistId}`);
   return res.json();
 };
 
 export const getPlaylists = async () => {
-  const res = await fetch(BASE_API_URL, { credentials: "include" });
+  const res = await fetchWithAuth(`/playlist`);
   return res.json();
 };
 
 export const deletePlaylist = async (playlistId) => {
-  const res = await fetch(`${BASE_API_URL}/delete-playlist/${playlistId}`, {
-    method: "POST",
-    credentials: "include",
+  const res = await fetchWithAuth(`/playlist/delete-playlist/${playlistId}`, {
+    method: "POST"
   });
   return res.json();
 };
 
 export const addVideoToPlaylist = async (playlistId, videoId) => {
-  const res = await fetch(`${BASE_API_URL}/add-video`, {
+  const res = await fetchWithAuth(`/playlist/add-video`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    credentials: "include",
     body: JSON.stringify({ playlistId, videoId }),
   });
   return res.json();
 };
 
 export const removeVideoFromPlaylist = async (playlistId, videoId) => {
-  const res = await fetch(`${BASE_API_URL}/remove-video`, {
+  const res = await fetchWithAuth(`/playlist/remove-video`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    credentials: "include",
     body: JSON.stringify({ playlistId, videoId }),
   });
   return res.json();
@@ -54,7 +49,7 @@ export const removeVideoFromPlaylist = async (playlistId, videoId) => {
 
 // Get history count
 export const getHistoryCount = async () => {
-  const res = await fetch(`${USER_API_URL}/history`, { credentials: "include" });
+  const res = await fetchWithAuth(`/users/history`);
   const data = await res.json();
   return data?.data?.length || 0;
 };
@@ -67,14 +62,14 @@ export const getPlaylistCount = async () => {
 
 // Get watch later count
 export const getWatchLaterCount = async () => {
-  const res = await fetch(`${USER_API_URL}/watch-later`, { credentials: "include" });
+  const res = await fetchWithAuth(`/users/watch-later`);
   const data = await res.json();
   return data?.data?.length || 0;
 };
 
 // Get liked videos count
 export const getLikedVideosCount = async () => {
-  const res = await fetch(`${USER_API_URL}/liked-videos`, { credentials: "include" });
+  const res = await fetchWithAuth(`/users/liked-videos`);
   const data = await res.json();
   return data?.data?.length || 0;
 };

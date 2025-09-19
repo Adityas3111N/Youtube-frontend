@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ThumbsUp, ThumbsDown, Share2, MoreHorizontal, Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getRelativeTime, formatNumber } from "../utils/formatDuration";
+import { fetchWithAuth } from "../services/apiClient";
 // Helper function to format large numbers (e.g., 1234567 -> 1.2M)
 
 
@@ -70,7 +71,7 @@ const VideoPlayerPage = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/users/current-user`, { credentials: 'include' });
+        const res = await fetchWithAuth(`/users/current-user`);
         if (res.ok) {
           const userData = await res.json();
           setCurrentUserId(userData?.data?._id);
@@ -97,9 +98,8 @@ const VideoPlayerPage = () => {
     setLikeLoading(true);
 
     try {
-      const res = await fetch(`${BASE_API_URL}/videos/like-video/${video._id}`, {
-        method: "PATCH",
-        credentials: "include"
+      const res = await fetchWithAuth(`/videos/like-video/${video._id}`, {
+        method: "PATCH"
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to like video");
@@ -124,9 +124,8 @@ const VideoPlayerPage = () => {
     setDislikeLoading(true);
 
     try {
-      const res = await fetch(`${BASE_API_URL}/videos/dislike-video/${video._id}`, {
-        method: "PATCH",
-        credentials: "include"
+      const res = await fetchWithAuth(`/videos/dislike-video/${video._id}`, {
+        method: "PATCH"
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to dislike video");
@@ -151,10 +150,9 @@ const VideoPlayerPage = () => {
     if (!newComment.trim()) return;
 
     try {
-      const res = await fetch(`${BASE_API_URL}/comments/add-comment`, {
+      const res = await fetchWithAuth(`/comments/add-comment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ content: newComment, video: videoId })
       });
       const data = await res.json();
@@ -171,10 +169,9 @@ const VideoPlayerPage = () => {
     if (!editContent.trim()) return;
 
     try {
-      const res = await fetch(`${BASE_API_URL}/comments/update-comment?commentId=${commentId}`, {
+      const res = await fetchWithAuth(`/comments/update-comment?commentId=${commentId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ content: editContent })
       });
       const data = await res.json();
@@ -190,9 +187,8 @@ const VideoPlayerPage = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const res = await fetch(`${BASE_API_URL}/comments/delete-comment?commentId=${commentId}`, {
-        method: 'POST',
-        credentials: 'include'
+      const res = await fetchWithAuth(`/comments/delete-comment?commentId=${commentId}`, {
+        method: 'POST'
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete comment');
@@ -216,9 +212,7 @@ const VideoPlayerPage = () => {
 
     const fetchSubscriptionStatus = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/subscription/status/${channel?._id}`, {
-          credentials: "include", // important to send cookies for auth
-        });
+        const res = await fetchWithAuth(`/subscription/status/${channel?._id}`);
 
         const data = await res.json();
         console.log(data)
@@ -263,9 +257,8 @@ const VideoPlayerPage = () => {
         ? `${BASE_API_URL}/subscription/unSubscribe?channelId=${channel._id}`
         : `${BASE_API_URL}/subscription/subscribe?channelId=${channel._id}`;
 
-      const res = await fetch(endpoint, {
-        method: "POST",
-        credentials: "include",
+      const res = await fetchWithAuth(endpoint, {
+        method: "POST"
       });
 
       const data = await res.json();
@@ -314,9 +307,8 @@ const VideoPlayerPage = () => {
 
   useEffect(() => {
     // Update watch history immediately on video load
-    fetch(`${BASE_API_URL}/users/addWatchHistory/${videoId}`, {
+    fetchWithAuth(`/users/addWatchHistory/${videoId}`, {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

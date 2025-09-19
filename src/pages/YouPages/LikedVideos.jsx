@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import VideoCard from "../../components/videoCard"; // adjust path if needed
+import { fetchWithAuth } from "../../services/apiClient";
 
 export default function LikedVideos() {
   const [videos, setVideos] = useState([]);
@@ -10,9 +11,7 @@ export default function LikedVideos() {
   useEffect(() => {
     const fetchLikedVideos = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/users/liked-videos`, {
-          credentials: "include", // sends cookies for auth
-        });
+        const res = await fetchWithAuth(`/users/liked-videos`);
 
         const data = await res.json();
 

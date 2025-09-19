@@ -6,6 +6,7 @@ import { formatDuration } from "../utils/formatDuration";
 import { getRelativeTime } from "../utils/formatDuration";
 import { createPlaylist } from "../pages/PlayList/PlaylistApis";
 import toast from "react-hot-toast";
+import { fetchWithAuth } from "../services/apiClient";
 
 
 
@@ -27,9 +28,7 @@ export default function VideoCard({ video }) {
     useEffect(() => {
         const checkWatchLater = async () => {
             try {
-                const res = await fetch(`${BASE_API_URL}/users/in-watch-later/${video._id}`, {
-                    credentials: "include",
-                });
+                const res = await fetchWithAuth(`/users/in-watch-later/${video._id}`);
                 const data = await res.json();
                 if (data.success) {
                     setInWatchLater(data.inWatchLater);
@@ -45,9 +44,7 @@ export default function VideoCard({ video }) {
     useEffect(() => {
         const fetchPlaylists = async () => {
             try {
-                const res = await fetch(`${BASE_API_URL}/playlist`, {
-                    credentials: "include",
-                });
+                const res = await fetchWithAuth(`/playlist`);
                 const data = await res.json();
                 if (data?.data) {
                     const updated = data.data.map(pl => ({
@@ -70,9 +67,8 @@ export default function VideoCard({ video }) {
 
     const handleAddToWatchLater = async (videoId) => {
         try {
-            const res = await fetch(`${BASE_API_URL}/users/watch-later/add/${videoId}`, {
-                method: "POST",
-                credentials: "include",
+            const res = await fetchWithAuth(`/users/watch-later/add/${videoId}`, {
+                method: "POST"
             });
 
             const data = await res.json();
@@ -90,9 +86,8 @@ export default function VideoCard({ video }) {
 
     const handleRemoveFromWatchLater = async (videoId) => {
         try {
-            const res = await fetch(`${BASE_API_URL}/users/watch-later/remove/${videoId}`, {
-                method: "POST",
-                credentials: "include",
+            const res = await fetchWithAuth(`/users/watch-later/remove/${videoId}`, {
+                method: "POST"
             });
 
             const data = await res.json();
@@ -114,9 +109,8 @@ export default function VideoCard({ video }) {
             const url = `${BASE_API_URL}/playlist/${playlistId}/videos/${video._id}`;
             const method = isInPlaylist ? "DELETE" : "POST";
 
-            const res = await fetch(url, {
-                method,
-                credentials: "include",
+            const res = await fetchWithAuth(url, {
+                method
             });
             const result = await res.json();
 
