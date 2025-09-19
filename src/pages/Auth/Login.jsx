@@ -25,6 +25,7 @@ export default function Login() {
                 headers: { "Content-Type": "application/json" },
                 // credentials: "include", // IMPORTANT for cookies not fetching cookies anymore. just give the response from backend to frontend.
                 body: JSON.stringify(formData),
+                credentials: "include",
             });
 
 
