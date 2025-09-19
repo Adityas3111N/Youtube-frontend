@@ -36,8 +36,8 @@ export default function Login() {
             }
 
             // localStorage.setItem("token", data.token); // not using tokens from cookies
-            localStorage.setItem("accessToken", data.data.accessToken);
-            localStorage.setItem("refreshToken", data.data.refreshToken);
+            // localStorage.setItem("accessToken", data.data.accessToken);
+            // localStorage.setItem("refreshToken", data.data.refreshToken);
             
             navigate("/"); // redirect after login
         } catch (err) {
