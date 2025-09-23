@@ -9,7 +9,7 @@ export default function ChannelPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const BASE_API_URL = "http://localhost:8000/api/v1";
+  const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 
   useEffect(() => {
     const fetchChannelData = async () => {
