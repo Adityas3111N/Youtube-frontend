@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./SideBar";
 import Nav from "./Nav";
+import {apiFetch} from "../Auth/apiFetch"
 
 const Layout = () => {
 
@@ -14,9 +15,7 @@ const Layout = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/users/current-user`, {
-          credentials: "include",
-        });
+        const res = await apiFetch(`/users/current-user`);
         if (!res.ok) throw new Error("Failed to fetch user");
         const data = await res.json();
         console.log(data);
