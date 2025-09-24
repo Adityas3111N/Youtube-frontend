@@ -71,7 +71,7 @@ const VideoPlayerPage = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/users/current-user`, { credentials: 'include' });
+        const res = await apiFetch(`/users/current-user`);
         if (res.ok) {
           const userData = await res.json();
           setCurrentUserId(userData?.data?._id);
@@ -124,9 +124,8 @@ const VideoPlayerPage = () => {
     setDislikeLoading(true);
 
     try {
-      const res = await fetch(`${BASE_API_URL}/videos/dislike-video/${video._id}`, {
+      const res = await apiFetch(`/videos/dislike-video/${video._id}`, {
         method: "PATCH",
-        credentials: "include"
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to dislike video");
@@ -151,10 +150,8 @@ const VideoPlayerPage = () => {
     if (!newComment.trim()) return;
 
     try {
-      const res = await fetch(`${BASE_API_URL}/comments/add-comment`, {
+      const res = await apiFetch(`/comments/add-comment`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ content: newComment, video: videoId })
       });
       const data = await res.json();
@@ -171,10 +168,8 @@ const VideoPlayerPage = () => {
     if (!editContent.trim()) return;
 
     try {
-      const res = await fetch(`${BASE_API_URL}/comments/update-comment?commentId=${commentId}`, {
+      const res = await apiFetch(`/comments/update-comment?commentId=${commentId}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ content: editContent })
       });
       const data = await res.json();
@@ -190,9 +185,8 @@ const VideoPlayerPage = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const res = await fetch(`${BASE_API_URL}/comments/delete-comment?commentId=${commentId}`, {
+      const res = await apiFetch(`/comments/delete-comment?commentId=${commentId}`, {
         method: 'POST',
-        credentials: 'include'
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to delete comment');
@@ -216,9 +210,7 @@ const VideoPlayerPage = () => {
 
     const fetchSubscriptionStatus = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/subscription/status/${channel?._id}`, {
-          credentials: "include", // important to send cookies for auth
-        });
+        const res = await apiFetch(`/subscription/status/${channel?._id}`);
 
         const data = await res.json();
         console.log(data)
@@ -260,12 +252,11 @@ const VideoPlayerPage = () => {
 
       // Decide which API to call based on current state
       const endpoint = isSubscribed
-        ? `${BASE_API_URL}/subscription/unSubscribe?channelId=${channel._id}`
-        : `${BASE_API_URL}/subscription/subscribe?channelId=${channel._id}`;
+        ? `/subscription/unSubscribe?channelId=${channel._id}`
+        : `/subscription/subscribe?channelId=${channel._id}`;
 
-      const res = await fetch(endpoint, {
+      const res = await apiFetch(endpoint, {
         method: "POST",
-        credentials: "include",
       });
 
       const data = await res.json();
@@ -293,12 +284,8 @@ const VideoPlayerPage = () => {
   //views will be counted from hereeee guysss.
   useEffect(() => {
     const timer = setTimeout(() => {
-      fetch(`${BASE_API_URL}/videos/${videoId}/views`, {
+      apiFetch(`/videos/${videoId}/views`, {
         method: "POST",
-        credentials: "include", // so user session/cookie is sent
-        headers: {
-          "Content-Type": "application/json"
-        }
       })
         .then((res) => res.json())
         // .then((data) => {
@@ -314,12 +301,8 @@ const VideoPlayerPage = () => {
 
   useEffect(() => {
     // Update watch history immediately on video load
-    fetch(`${BASE_API_URL}/users/addWatchHistory/${videoId}`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    apiFetch(`${BASE_API_URL}/users/addWatchHistory/${videoId}`, {
+      method: "POST"
     })
       .then((res) => res.json())
       // .then((data) => console.log("History updated:", data))
