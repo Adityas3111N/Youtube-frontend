@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ThumbsUp, ThumbsDown, Share2, MoreHorizontal, Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getRelativeTime, formatNumber } from "../utils/formatDuration";
+import { apiFetch } from "./Auth/apiFetch";
 // Helper function to format large numbers (e.g., 1234567 -> 1.2M)
 
 
@@ -97,9 +98,8 @@ const VideoPlayerPage = () => {
     setLikeLoading(true);
 
     try {
-      const res = await fetch(`${BASE_API_URL}/videos/like-video/${video._id}`, {
+      const res = await apiFetch(`/videos/like-video/${video._id}`, {
         method: "PATCH",
-        credentials: "include"
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to like video");
